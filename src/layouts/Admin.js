@@ -45,6 +45,7 @@ const useStyles = makeStyles(styles);
 export default function Admin({ ...rest }) {
 
   const [fireUser, setFireUser] = useState(null);
+
   const fireAuth = () => {
     fire.auth().onAuthStateChanged(user => {
       if (user) {
@@ -56,16 +57,10 @@ export default function Admin({ ...rest }) {
   }
 
   useEffect(() => {
-    console.log('------------------------> user in', {fireUser});
     if (!fireUser) {
       fireAuth();
-    } else {
-      alert("login" + JSON.stringify(fireUser));
     }
   }, [fireUser, setFireUser, fireAuth]);
-
-  console.log('------------------------> user', {fireUser});
-  
 
   // styles
   const classes = useStyles();
