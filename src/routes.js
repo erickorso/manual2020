@@ -96,7 +96,7 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/logout",
+    path: "",
     name: "Logout",
     icon: ExitToAppIcon,
     component: Logout,

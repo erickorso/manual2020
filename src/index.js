@@ -23,9 +23,10 @@ import store from "./store";
 import { Provider } from "react-redux";
 
 // core components
-import Admin from "layouts/Admin.js";
+import Admin from "layouts/Admin";
 
 import "assets/css/material-dashboard-react.css?v=1.8.0";
+import Logout from "layouts/Logout";
 
 const hist = createBrowserHistory();
 
@@ -34,7 +35,8 @@ ReactDOM.render(
     <Router history={hist}>
       <Switch>
         <Route path="/admin" component={Admin} />
-        <Redirect from="/" to="/admin/dashboard" />
+        <Route path="/logout" component={Logout} />
+        {/* <Redirect from="/" to="/admin/dashboard" /> */}
       </Switch>
     </Router>
   </Provider>,

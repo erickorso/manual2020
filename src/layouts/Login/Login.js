@@ -9,56 +9,58 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import fire from '../config/firebase';
+import fire from '../../config/firebase';
 import './Login.scss'
 
-export default () => {
-
-  const [email, setEmail] = useState(null)
-  const [password, setPassword] = useState(null)
-  const [out, setOut] = useState(null)
-
-  const logout = () => {
-      fire
-        .auth()
-        .signOut()
-  }
+export default ({
+  loginAction,
+  loginErrorAction,
+  signInAction,
+  signInErrorAction,
+  clearError,
+  errorCode,
+  errorMessage,
+  message,
+}) => {
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
 
   const login = () => {
+    clearError();
     fire
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
-        console.log("-------------->", { user });
+        loginAction(user);
       })
-      .catch((error) => console.log("-----------login error", { error }));
+      .catch((error) => {
+        loginErrorAction(error);
+      });
   };
 
   const sighIn = () => {
+    clearError();
     fire
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((user) => {
-        console.log("-------------->", { user });
+        signInAction(user);
       })
-      .catch((error) => console.log("-----------login error", { error }));
+      .catch((error) => {
+        signInErrorAction(error);
+      });
   };
-
-  useEffect(() => {
-    if (!out) {
-      logout();
-      setOut(true)
-    }
-  }, [out, setOut, logout]);
 
   return (
     <div className="login-form">
       <GridContainer>
         <GridItem xs={12}>
           <Card>
-            <CardHeader color="primary">
-              <h4>Logout</h4>
-              <p>Thanks, come back soon</p>
+            <CardHeader color={!errorMessage ? "primary" : "danger"}>
+              <h4>Login / Sign In</h4>
+              {errorCode && <p>{errorCode}</p>}
+              {errorMessage && <p>{errorMessage}</p>}
+              {message && <p>{message}</p>}
             </CardHeader>
             <CardBody>
               <GridContainer>
@@ -95,7 +97,7 @@ export default () => {
               <Button color="primary" onClick={() => login()}>
                 Login
               </Button>
-              <Button color="secondary" onClick={() => sighIn()}>
+              <Button color="info" onClick={() => sighIn()}>
                 Sign In
               </Button>
             </CardFooter>
@@ -104,4 +106,4 @@ export default () => {
       </GridContainer>
     </div>
   );
-}
+};
