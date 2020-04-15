@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import fire from '../../config/firebase';
 import Login from '../Login/'
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
@@ -45,7 +44,6 @@ const useStyles = makeStyles(styles);
 export default (props) => {
   const {
     user: {
-      user,
       user: { email },
     },
     logoutAction,
@@ -100,7 +98,7 @@ export default (props) => {
       }
       window.removeEventListener("resize", resizeFunction);
     };
-  }, [mainPanel]);
+  }, [mainPanel, email]);
   
   return (
     <div className={classes.wrapper}>
