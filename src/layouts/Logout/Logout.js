@@ -32,6 +32,6 @@ export default ({ logoutAction, clearError, userEmail, history }) => {
   }, [userEmail, history, pathname, out]);
 
   return <div className="makeStyles-wrapper-1">
-            <Login message="Thanks, come back soon"/>
+             <Login message="Thanks, come back soon"/>
           </div>
 }
