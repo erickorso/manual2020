@@ -1,14 +1,16 @@
 const defaultUser = {
-  name: 'Erick',
-  lastName: 'Vargas'
+  user: {
+    email: null
+  }
 }
 export default (state = defaultUser, action) => {
   switch (action.type) {
-    case "GET_USER":
-      return {
-        ...state,
-        user: action.user
-      };
+    case "LOGIN":
+    case "SIGNIN":
+      return action.user;
+
+    case "LOGOUT":
+      return defaultUser;
 
     default:
       break;

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import fire from '../config/firebase';
-import Login from './Login'
+import fire from '../../config/firebase';
+import Login from '../Login/'
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
@@ -42,26 +42,14 @@ const switchRoutes = (
 
 const useStyles = makeStyles(styles);
 
-export default function Admin({ ...rest }) {
-
-  const [fireUser, setFireUser] = useState(null);
-
-  const fireAuth = () => {
-    fire.auth().onAuthStateChanged(user => {
-      if (user) {
-        setFireUser(user)
-      }else{
-        setFireUser(null)
-      }
-    })
-  }
-
-  useEffect(() => {
-    if (!fireUser) {
-      fireAuth();
-    }
-  }, [fireUser, setFireUser, fireAuth]);
-
+export default (props) => {
+  const {
+    user: {
+      user,
+      user: { email },
+    },
+    logoutAction,
+  } = props;
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
@@ -96,8 +84,8 @@ export default function Admin({ ...rest }) {
     }
   };
   // initialize and destroy the PerfectScrollbar plugin
-  React.useEffect(() => {
-    if (navigator.platform.indexOf("Win") > -1 && fireUser) {
+  useEffect(() => {
+    if (navigator.platform.indexOf("Win") > -1 && email) {
       ps = new PerfectScrollbar(mainPanel.current, {
         suppressScrollX: true,
         suppressScrollY: false,
@@ -107,18 +95,17 @@ export default function Admin({ ...rest }) {
     window.addEventListener("resize", resizeFunction);
     // Specify how to clean up after this effect:
     return function cleanup() {
-      if (navigator.platform.indexOf("Win") > -1 && fireUser) {
+      if (navigator.platform.indexOf("Win") > -1 && email) {
         ps.destroy();
       }
       window.removeEventListener("resize", resizeFunction);
     };
   }, [mainPanel]);
+  
   return (
     <div className={classes.wrapper}>
-      {
-        !fireUser && <Login/>
-      }
-      {fireUser && 
+      {!email && <Login />}
+      {email && (
         <>
           <Sidebar
             routes={routes}
@@ -128,13 +115,14 @@ export default function Admin({ ...rest }) {
             handleDrawerToggle={handleDrawerToggle}
             open={mobileOpen}
             color={color}
-            {...rest}
+            {...props}
+            logoutAction={logoutAction}
           />
           <div className={classes.mainPanel} ref={mainPanel}>
             <Navbar
               routes={routes}
               handleDrawerToggle={handleDrawerToggle}
-              {...rest}
+              {...props}
             />
             {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
             {getRoute() ? (
@@ -155,7 +143,7 @@ export default function Admin({ ...rest }) {
             />
           </div>
         </>
-      }
+      )}
     </div>
   );
 }
