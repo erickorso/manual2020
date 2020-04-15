@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -22,6 +22,7 @@ export default ({
   errorMessage,
   message,
 }) => {
+  
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
 
